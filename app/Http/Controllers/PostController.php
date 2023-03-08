@@ -10,9 +10,9 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     public function index(){
-        $post = Post::all();
+        $posts = Post::all();
         // return response()->json(['data'=>$post]);
-        return PostResource::collection($post);
+        return PostResource::collection($posts);
     }
 
     public function show($id){
