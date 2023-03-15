@@ -13,7 +13,7 @@ class PostController extends Controller
     public function index(){
         $posts = Post::all();
         // return response()->json(['data'=>$post]);
-        return PostResource::collection($posts);
+        return PostResource::collection($posts -> loadMissing('writer:id,username'));
     }
 
     public function show($id){
