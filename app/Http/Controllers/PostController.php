@@ -42,6 +42,11 @@ class PostController extends Controller
             'news_content' => 'required',
         ]);
 
-        return response()->json('sudah tidak ada error');
+        // return response()->json('sudah tidak ada error');
+
+        $post = Post::findOrFail($id);
+        $post->update($request->all());
+
+        return new PostDetailResource($post->loadMissing('writer:id,username'));
     }
 }
