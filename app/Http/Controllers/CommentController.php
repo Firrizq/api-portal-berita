@@ -15,11 +15,18 @@ class CommentController extends Controller{
 
         $request['user_id'] = auth()->user()->id;
 
-        $comment = Comment::create($request->all);
+        $comment = Comment::create($request->all());
 
         // return response()->json($comment);
 
         return new CommentResource($comment->loadMissing(['commentator:id,username']));
 
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request -> validate([
+            
+        ]);
     }
 }
