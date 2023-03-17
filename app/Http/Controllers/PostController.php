@@ -7,6 +7,7 @@ use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -28,8 +29,19 @@ class PostController extends Controller
 
         ]);
 
-        // return response()->json('sudah dapat digunakan');
+        $image = null;
 
+        if ($request -> file) {
+            $fileName = $this->generateRandomString();
+            $extension = $request->file->extension();
+
+            $image = $fileName. '.' .$extension;
+            Storage::putFileAs('image', $request->file, $image);
+            
+        }
+
+        // return response()->json('sudah dapat digunakan');
+        $request['image'] = $image;
         $request['author'] = Auth::user()->id;
 
         $post = Post::create($request->all());
@@ -57,5 +69,15 @@ class PostController extends Controller
         return response()->json([
             'message' => 'successfully deleted'
         ]);
+    }
+
+    function generateRandomString($length = 15) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[random_int(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }
