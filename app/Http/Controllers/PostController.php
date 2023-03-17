@@ -37,7 +37,7 @@ class PostController extends Controller
 
             $image = $fileName. '.' .$extension;
             Storage::putFileAs('image', $request->file, $image);
-            
+
         }
 
         // return response()->json('sudah dapat digunakan');
@@ -60,6 +60,20 @@ class PostController extends Controller
         $post->update($request->all());
 
         return new PostDetailResource($post->loadMissing('writer:id,username'));
+
+        $image = null;
+
+        if ($request -> file) {
+            $fileName = $this->generateRandomString();
+            $extension = $request->file->extension();
+
+            $image = $fileName. '.' .$extension;
+            Storage::putFileAs('image', $request->file, $image);
+            
+        }
+
+        // return response()->json('sudah dapat digunakan');
+        $request['image'] = $image;
     }
 
     public function delete($id){
