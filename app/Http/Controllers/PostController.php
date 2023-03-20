@@ -55,12 +55,6 @@ class PostController extends Controller
         ]);
 
         // return response()->json('sudah tidak ada error');
-
-        $post = Post::findOrFail($id);
-        $post->update($request->all());
-
-        return new PostDetailResource($post->loadMissing('writer:id,username'));
-
         $image = null;
 
         if ($request -> file) {
@@ -74,6 +68,12 @@ class PostController extends Controller
 
         // return response()->json('sudah dapat digunakan');
         $request['image'] = $image;
+        
+        $post = Post::findOrFail($id);
+        $post->update($request->all());
+
+        return new PostDetailResource($post->loadMissing('writer:id,username'));
+
     }
 
     public function delete($id){
